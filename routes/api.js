@@ -1,8 +1,10 @@
 var express = require('express');
 
 module.exports = (Collection) => {
+
   //The following crud operations are 'Middleware functions'
 
+  
 
   //Read
   const readMany = (req, res) => {
@@ -11,10 +13,12 @@ module.exports = (Collection) => {
     Collection.find(query, (err,result) => {
       if(err) {
         res.status(500).send(e);
-        console.log(e.message);
+        console.log("Activity log: " + e.message);
+        console.log('Activity log:', Date())
       } else {
         res.send(result);
-        console.log("readMany request has been handled")
+        console.log("Activity log: readMany was Successful")
+        console.log('Activity log:', Date())
       }
     });
   };
