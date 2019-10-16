@@ -1,0 +1,18 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "the middleware that will provide data from mongo database, to React frontend.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "author": "",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "fsevents": "^2.1.1",
+    "mongoose": "^5.7.5",
+    "nodemon": "^1.19.4"
+  }
+}
