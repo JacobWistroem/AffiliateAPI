@@ -1,9 +1,13 @@
 var express = require('express');
 var app = express();
 var port = 3001;
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const models = require('./models/models');
-
+//Allow React from port 3000 to connect to our API route
+const corsOptions = {
+  origin: 'http://localhost:3000'
+}
 
 //Middelware
 app.use(bodyParser.json());
@@ -16,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 
-app.use('/api', require('./routes/api')(models.Provider));
+app.use('/api',cors(corsOptions), require('./routes/api')(models.Provider));
 
 //app.use('/api', seoproviders);
 //router.use('/api/articles', articles)
@@ -34,10 +38,10 @@ var providerSchema = new mongoose.Schema({
 
 var Provider = mongoose.model("SEOProvider", providerSchema);
 */
-/*
-//Create a Provider in the database SEOProvider collection
 
-var provider1 = new Provider({
+//Create a Provider in the database SEOProvider collection
+/*
+var provider1 = new models.Provider({
   Name: "Accuranker",
   Description: "TEst description12312312",
   Domain: "https://www.Accuranker.com",

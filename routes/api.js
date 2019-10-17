@@ -1,5 +1,4 @@
 var express = require('express');
-
 module.exports = (Collection) => {
 
   //The following crud operations are 'Middleware functions'
@@ -29,7 +28,7 @@ module.exports = (Collection) => {
 //=======
 
 let router = express.Router();
-router.get('/read', readMany);
+router.get('/read',readMany);
 
 
 return router;
