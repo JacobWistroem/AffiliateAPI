@@ -1,5 +1,4 @@
 var express = require('express');
-
 module.exports = (Collection) => {
 
   //The following crud operations are 'Middleware functions'
