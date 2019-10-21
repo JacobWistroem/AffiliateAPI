@@ -4,7 +4,24 @@ module.exports = (Collection) => {
 
   //The following crud operations are 'Middleware functions'
 
-  
+  //=======
+  //Create
+  //=======
+  const create = (req, res) => {
+    const newEntry = req.body;
+    Collection.create(newEntry, (err,newEntry) => {
+      if(err) {
+        console.log(err);
+        res.sendStatus(500);
+        console.log("Activity log: [Create] " + err.message);
+        console.log('Activity log:', Date())
+      } else {
+        res.send(newEntry);
+        console.log("Activity log: 'Create' was Successful")
+        console.log('Activity log:', Date())
+      }
+    });
+  };
 
   //Read
   const readMany = (req, res) => {
@@ -12,8 +29,8 @@ module.exports = (Collection) => {
   
     Collection.find(query, (err,result) => {
       if(err) {
-        res.status(500).send(e);
-        console.log("Activity log: " + e.message);
+        res.status(500).send(err);
+        console.log("Activity log: " + err.message);
         console.log('Activity log:', Date())
       } else {
         res.send(result);
@@ -23,54 +40,74 @@ module.exports = (Collection) => {
     });
   };
 
+  // ========
+  // Read one
+  // ========
+  const readOne = (req, res) => {
+    const { _id } = req.params;
+  
+    Collection.findById(_id, (err,result) => {
+      if(err) {
+        res.status(500).send(err);
+        console.log("Activity log: [Read Specific] " + err.message);
+        console.log('Activity log:', Date())
+      } else {
+        res.send(result);
+        console.log("Activity log: Read Specific was a success");
+        console.log('Activity log:', Date())
+      }
+    });
+  };
+
+
+  // ======
+  // Update
+  // ======
+  const update = (req, res) => {
+    const changedEntry = req.body;
+    Collection.update({ _id: req.params._id }, { $set: changedEntry }, (err) => {
+      if (err){
+        console.log("Activity log: [Update] " + err.message);
+        console.log('Activity log:', Date())
+        res.sendStatus(500);
+         } else {
+        res.sendStatus(200);
+        console.log("Activity log: Update was a success");
+        console.log('Activity log:', Date())
+         }
+    });
+  };
+
+  // ======
+  // Remove
+  // ======
+  const remove = (req, res) => {
+    Collection.remove({ _id: req.params._id }, (err) => {
+      if (err){
+      res.status(500).send(err);
+      console.log("Activity log: [Delete] " + err.message);
+      console.log('Activity log:', Date())
+      } else {
+        res.sendStatus(200);
+        console.log("Activity log: Update was a success");
+        console.log('Activity log:', Date())
+      }
+    });
+  };
+
+
 
 //=======
 //Routes
 //=======
 
 let router = express.Router();
+router.post('/create', create);
 router.get('/read', readMany);
+router.get('/read/:_id', readOne);
+router.put('/update/:_id', update);
+router.delete('/delete/:_id', remove);
 
 
 return router;
 }
-
-/*
-router.use(function timeLog (req, res, next) {
-  console.log('Time: ', Date.now())
-  next()
-})
-
-//GET home page.
-router.get('/seoproviders', function(req, res) {
-
-  //Create connection to database and define mongoose schema (will instantiate and object for CRUD)
-  mongoose.connect("mongodb://localhost:27017/APIaffiliate");
-  var providerSchema = new mongoose.Schema({
-    Name: String,
-    Description: String,
-    Domain: String,
-    Date: String,
-    Category: Array,
-    Image: String
-  });
-  
-  var Provider = mongoose.model("SEOProvider", providerSchema);
-
-
-// .find() will return results from the mongodb
-  Provider.find({}, function(err, provider){
-    if(err){
-      console.log("an error has occured!");
-      console.log(res.json(err));
-    } else {
-      console.log("Results from database (Providers):");
-      console.log(res.json(provider));
-    }
-  });
-  res.send(JSON.stringify(Provider))
-
-})
-
-module.exports = router;
-*/
